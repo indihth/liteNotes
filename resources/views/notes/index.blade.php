@@ -20,6 +20,8 @@
             @empty 
             <p>You have no notes yet.</p>
             @endforelse
+
+            {{ $notes->links() }}
         </div>
     </div>
 </x-app-layout>
