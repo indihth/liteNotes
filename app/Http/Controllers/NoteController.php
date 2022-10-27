@@ -23,7 +23,7 @@ class NoteController extends Controller
         ///////////////////////////////////////
         // paginate added to display only 'x' amount of notes per page
         // paginate() take arguement, num of notes to be displayed
-        $notes = Note::where('user_id', Auth::id())->latest('updated_at')->paginate(1);
+        $notes = Note::where('user_id', Auth::id())->latest('updated_at')->paginate(5);
 
 
 
