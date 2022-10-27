@@ -13,7 +13,8 @@
             @forelse ($notes as $note)
                 <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
                     <h2 class="font-bold text-2xl">
-                        {{ $note->title }}
+                        {{-- Makes note titles into links, passing the note id into URL --}}
+                       <a href="{{ route('notes.show', $note->id) }}">{{ $note->title }}</a> 
                     </h2>
                     <p class="mt-2">
                         {{-- Str::limit displays only 200 characters of text --}}
