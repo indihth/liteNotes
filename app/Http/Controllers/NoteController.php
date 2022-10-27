@@ -15,9 +15,15 @@ class NoteController extends Controller
      */
     public function index()
     {
+        ///////////////////////////////////////
         // display only notes for logged in user
         // latest, sorted by the 'update_at' column
-        $notes = Note::where('user_id', Auth::id())->latest('updated_at')->get();
+        // $notes = Note::where('user_id', Auth::id())->latest('updated_at')->get();
+        
+        ///////////////////////////////////////
+        // paginate added to display only 'x' amount of notes per page
+        // paginate() take arguement, num of notes to be displayed
+        $notes = Note::where('user_id', Auth::id())->latest('updated_at')->paginate(1);
 
 
 
