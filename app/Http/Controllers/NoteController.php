@@ -20,6 +20,14 @@ class NoteController extends Controller
         $notes = Note::where('user_id', Auth::id())->latest('updated_at')->get();
 
 
+
+        // linking the view for the notes to be displayed
+        return view('notes.index')->with('notes', $notes);
+
+        // can use alternatively include in view()
+        // return view('notes.index', $notes);
+
+
         // Displaying notes
         // dd($notes);
 
@@ -30,7 +38,7 @@ class NoteController extends Controller
 
             // shows the title attribute/field for the note 
             dump($notes->title);
-            
+
         });
     }
 
