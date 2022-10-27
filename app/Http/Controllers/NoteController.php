@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -13,7 +15,23 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        // display only notes for logged in user
+        // latest, sorted by the 'update_at' column
+        $notes = Note::where('user_id', Auth::id())->latest('updated_at')->get();
+
+
+        // Displaying notes
+        // dd($notes);
+
+
+        // Displaying notes titles only
+        // each function loops through the notes
+        $notes->each(function($notes) {
+
+            // shows the title attribute/field for the note 
+            dump($notes->title);
+            
+        });
     }
 
     /**
