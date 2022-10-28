@@ -92,12 +92,27 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($uuid)
+    public function show(Note $note)
     {
+        /////////////////////////////
+        // Can replace show($uuid) and inject Note directly instead of querying.
+        // Auth::id still needed so users can only access their own notes
+        // Without they could put any uuid into url and access notes
+        // FURTHER READING - laravel Gates and Policies
+        /////////////////////////////
+
+        if($note->user_id != Auth::id()) {
+            //403 error forbidden
+            return abort(403);
+        }
+
+        /////////////////////////////
         // Auth::id() needed to only show authorised users note.
         // Otherwise user could put any note id in url and access it.
         // firstOrFail displays a 404 error if the first note is unavailable.
-        $note = Note::where('uuid',$uuid)->where('user_id', Auth::id())->firstOrFail();
+        // 
+        // $note = Note::where('uuid',$uuid)->where('user_id', Auth::id())->firstOrFail();
+        /////////////////////////////
 
         // Return the note view page with variable 'note' from above
         return view('notes.show')->with('note', $note);
