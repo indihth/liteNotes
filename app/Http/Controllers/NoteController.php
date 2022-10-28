@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class NoteController extends Controller
 {
@@ -74,6 +75,7 @@ class NoteController extends Controller
 
         // Creates note, passing the user_id
         Note::create([
+            'uuid' => Str::uuid(),
             'user_id' => Auth::id(),
             'title' => $request->title,
             'text' => $request->text
@@ -90,9 +92,15 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($uuid)
     {
-        //
+        // Auth::id() needed to only show authorised users note.
+        // Otherwise user could put any note id in url and access it.
+        // firstOrFail displays a 404 error if the first note is unavailable.
+        $note = Note::where('uuid',$uuid)->where('user_id', Auth::id())->firstOrFail();
+
+        // Return the note view page with variable 'note' from above
+        return view('notes.show')->with('note', $note);
     }
 
     /**
