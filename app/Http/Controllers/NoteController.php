@@ -124,9 +124,14 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Note $note)
     {
-        //
+        if($note->user_id != Auth::id()) {
+            //403 error forbidden
+            return abort(403);
+        }
+
+        return view('notes.edit')->with('note', $note);
     }
 
     /**
