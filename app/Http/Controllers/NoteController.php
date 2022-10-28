@@ -141,9 +141,26 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Note $note)
     {
-        //
+        // Authorise user first
+        if($note->user_id != Auth::id()) {
+            //403 error forbidden
+            return abort(403);
+        }
+
+        // Validates the fields are filled, title max 120 char
+        $request->validate([
+            'title'=> 'required|max:120',
+            'text'=> 'required'
+        ]);
+
+        $note->update([
+            'title'=> $request->title,
+            'text'=> $request->text
+        ]);
+
+        return to_route('notes.show', $note);
     }
 
     /**
